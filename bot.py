@@ -12,13 +12,12 @@ try:
 except FileExistsError:
     exit(404)
 
-print(_dbCred) # DEBUG
-
 mydb = mysql.connector.connect(
         host=_dbCred.split("host: ")[1].split("\n")[0],
         user=_dbCred.split("user: ")[1].split("\n")[0],
         password=_dbCred.split("password: ")[1].split("\n")[0],
-        database=_dbCred.split("database: ")[1].split("\n")[0]
+        database=_dbCred.split("database: ")[1].split("\n")[0],
+        auth_plugin='mysql_native_password'
     )
 mycursor = mydb.cursor()
 
@@ -52,7 +51,7 @@ async def InitNewUser(telegramUser : types.User, clean = False):
 
 async def main():
     _bot = Bot(token=_token)
-    logging.basicConfig(level=logging.INFO)
+    logging.basicConfig(level=logging.WARN)
     await dp.start_polling(_bot)
 
 @dp.message(CommandStart())
@@ -86,7 +85,7 @@ async def MessageHandler(message: types.Message):
     if usersLocalDb[message.from_user.id]["getTaskNumber"]:
         match message.text:
             case "№ 1":
-                mycursor.execute(f"SELECT `id`, `type`, `text`, `img`, `answer`, `answerNum`, `file`, `img2` FROM `tasks` WHERE `type` = {message.text.split("№ ")[1]} ORDER BY rand() LIMIT 1")
+                mycursor.execute(f"SELECT `id`, `type`, `text`, `img`, `answer`, `answerNum`, `file`, `img2` FROM `tasks` WHERE `type` = {message.text.split('№ ')[1]} ORDER BY rand() LIMIT 1")
                 myresult = mycursor.fetchall()
                 id = myresult[0][0]
                 taskType = myresult[0][1]
@@ -120,7 +119,7 @@ async def MessageHandler(message: types.Message):
                 usersLocalDb[message.from_user.id]["getTaskAnswer"]["imgSecondUrl"] = imgSecondUrl
             case "№ 2":
                 mycursor.execute(
-                    f"SELECT `id`, `type`, `text`, `img`, `answer`, `answerNum`, `file`, `img2` FROM `tasks` WHERE `type` = {message.text.split("№ ")[1]} ORDER BY rand() LIMIT 1")
+                    f"SELECT `id`, `type`, `text`, `img`, `answer`, `answerNum`, `file`, `img2` FROM `tasks` WHERE `type` = {message.text.split('№ ')[1]} ORDER BY rand() LIMIT 1")
                 myresult = mycursor.fetchall()
                 id = myresult[0][0]
                 taskType = myresult[0][1]
@@ -156,7 +155,7 @@ async def MessageHandler(message: types.Message):
                 usersLocalDb[message.from_user.id]["getTaskAnswer"]["imgSecondUrl"] = imgSecondUrl
             case "№ 3":
                 mycursor.execute(
-                    f"SELECT `id`, `type`, `text`, `img`, `answer`, `answerNum`, `file`, `img2` FROM `tasks` WHERE `type` = {message.text.split("№ ")[1]} ORDER BY rand() LIMIT 1")
+                    f"SELECT `id`, `type`, `text`, `img`, `answer`, `answerNum`, `file`, `img2` FROM `tasks` WHERE `type` = {message.text.split('№ ')[1]} ORDER BY rand() LIMIT 1")
                 myresult = mycursor.fetchall()
                 id = myresult[0][0]
                 taskType = myresult[0][1]
@@ -192,7 +191,7 @@ async def MessageHandler(message: types.Message):
                 usersLocalDb[message.from_user.id]["getTaskAnswer"]["imgSecondUrl"] = imgSecondUrl
             case "№ 4":
                 mycursor.execute(
-                    f"SELECT `id`, `type`, `text`, `img`, `answer`, `answerNum`, `file`, `img2` FROM `tasks` WHERE `type` = {message.text.split("№ ")[1]} ORDER BY rand() LIMIT 1")
+                    f"SELECT `id`, `type`, `text`, `img`, `answer`, `answerNum`, `file`, `img2` FROM `tasks` WHERE `type` = {message.text.split('№ ')[1]} ORDER BY rand() LIMIT 1")
                 myresult = mycursor.fetchall()
                 id = myresult[0][0]
                 taskType = myresult[0][1]
@@ -228,7 +227,7 @@ async def MessageHandler(message: types.Message):
                 usersLocalDb[message.from_user.id]["getTaskAnswer"]["imgSecondUrl"] = imgSecondUrl
             case "№ 5":
                 mycursor.execute(
-                    f"SELECT `id`, `type`, `text`, `img`, `answer`, `answerNum`, `file`, `img2` FROM `tasks` WHERE `type` = {message.text.split("№ ")[1]} ORDER BY rand() LIMIT 1")
+                    f"SELECT `id`, `type`, `text`, `img`, `answer`, `answerNum`, `file`, `img2` FROM `tasks` WHERE `type` = {message.text.split('№ ')[1]} ORDER BY rand() LIMIT 1")
                 myresult = mycursor.fetchall()
                 id = myresult[0][0]
                 taskType = myresult[0][1]
@@ -264,7 +263,7 @@ async def MessageHandler(message: types.Message):
                 usersLocalDb[message.from_user.id]["getTaskAnswer"]["imgSecondUrl"] = imgSecondUrl
             case "№ 6":
                 mycursor.execute(
-                    f"SELECT `id`, `type`, `text`, `img`, `answer`, `answerNum`, `file`, `img2` FROM `tasks` WHERE `type` = {message.text.split("№ ")[1]} ORDER BY rand() LIMIT 1")
+                    f"SELECT `id`, `type`, `text`, `img`, `answer`, `answerNum`, `file`, `img2` FROM `tasks` WHERE `type` = {message.text.split('№ ')[1]} ORDER BY rand() LIMIT 1")
                 myresult = mycursor.fetchall()
                 id = myresult[0][0]
                 taskType = myresult[0][1]
@@ -300,7 +299,7 @@ async def MessageHandler(message: types.Message):
                 usersLocalDb[message.from_user.id]["getTaskAnswer"]["imgSecondUrl"] = imgSecondUrl
             case "№ 7":
                 mycursor.execute(
-                    f"SELECT `id`, `type`, `text`, `img`, `answer`, `answerNum`, `file`, `img2` FROM `tasks` WHERE `type` = {message.text.split("№ ")[1]} ORDER BY rand() LIMIT 1")
+                    f"SELECT `id`, `type`, `text`, `img`, `answer`, `answerNum`, `file`, `img2` FROM `tasks` WHERE `type` = {message.text.split('№ ')[1]} ORDER BY rand() LIMIT 1")
                 myresult = mycursor.fetchall()
                 id = myresult[0][0]
                 taskType = myresult[0][1]
@@ -336,7 +335,7 @@ async def MessageHandler(message: types.Message):
                 usersLocalDb[message.from_user.id]["getTaskAnswer"]["imgSecondUrl"] = imgSecondUrl
             case "№ 8":
                 mycursor.execute(
-                    f"SELECT `id`, `type`, `text`, `img`, `answer`, `answerNum`, `file`, `img2` FROM `tasks` WHERE `type` = {message.text.split("№ ")[1]} ORDER BY rand() LIMIT 1")
+                    f"SELECT `id`, `type`, `text`, `img`, `answer`, `answerNum`, `file`, `img2` FROM `tasks` WHERE `type` = {message.text.split('№ ')[1]} ORDER BY rand() LIMIT 1")
                 myresult = mycursor.fetchall()
                 id = myresult[0][0]
                 taskType = myresult[0][1]
@@ -372,7 +371,7 @@ async def MessageHandler(message: types.Message):
                 usersLocalDb[message.from_user.id]["getTaskAnswer"]["imgSecondUrl"] = imgSecondUrl
             case "№ 9":
                 mycursor.execute(
-                    f"SELECT `id`, `type`, `text`, `img`, `answer`, `answerNum`, `file`, `img2` FROM `tasks` WHERE `type` = {message.text.split("№ ")[1]} ORDER BY rand() LIMIT 1")
+                    f"SELECT `id`, `type`, `text`, `img`, `answer`, `answerNum`, `file`, `img2` FROM `tasks` WHERE `type` = {message.text.split('№ ')[1]} ORDER BY rand() LIMIT 1")
                 myresult = mycursor.fetchall()
                 id = myresult[0][0]
                 taskType = myresult[0][1]
@@ -408,7 +407,7 @@ async def MessageHandler(message: types.Message):
                 usersLocalDb[message.from_user.id]["getTaskAnswer"]["imgSecondUrl"] = imgSecondUrl
             case "№ 10":
                 mycursor.execute(
-                    f"SELECT `id`, `type`, `text`, `img`, `answer`, `answerNum`, `file`, `img2` FROM `tasks` WHERE `type` = {message.text.split("№ ")[1]} ORDER BY rand() LIMIT 1")
+                    f"SELECT `id`, `type`, `text`, `img`, `answer`, `answerNum`, `file`, `img2` FROM `tasks` WHERE `type` = {message.text.split('№ ')[1]} ORDER BY rand() LIMIT 1")
                 myresult = mycursor.fetchall()
                 id = myresult[0][0]
                 taskType = myresult[0][1]
@@ -444,7 +443,7 @@ async def MessageHandler(message: types.Message):
                 usersLocalDb[message.from_user.id]["getTaskAnswer"]["imgSecondUrl"] = imgSecondUrl
             case "№ 11":
                 mycursor.execute(
-                    f"SELECT `id`, `type`, `text`, `img`, `answer`, `answerNum`, `file`, `img2` FROM `tasks` WHERE `type` = {message.text.split("№ ")[1]} ORDER BY rand() LIMIT 1")
+                    f"SELECT `id`, `type`, `text`, `img`, `answer`, `answerNum`, `file`, `img2` FROM `tasks` WHERE `type` = {message.text.split('№ ')[1]} ORDER BY rand() LIMIT 1")
                 myresult = mycursor.fetchall()
                 id = myresult[0][0]
                 taskType = myresult[0][1]
@@ -480,7 +479,7 @@ async def MessageHandler(message: types.Message):
                 usersLocalDb[message.from_user.id]["getTaskAnswer"]["imgSecondUrl"] = imgSecondUrl
             case "№ 12":
                 mycursor.execute(
-                    f"SELECT `id`, `type`, `text`, `img`, `answer`, `answerNum`, `file`, `img2` FROM `tasks` WHERE `type` = {message.text.split("№ ")[1]} ORDER BY rand() LIMIT 1")
+                    f"SELECT `id`, `type`, `text`, `img`, `answer`, `answerNum`, `file`, `img2` FROM `tasks` WHERE `type` = {message.text.split('№ ')[1]} ORDER BY rand() LIMIT 1")
                 myresult = mycursor.fetchall()
                 id = myresult[0][0]
                 taskType = myresult[0][1]
@@ -624,7 +623,7 @@ async def MessageHandler(message: types.Message):
         if usersLocalDb[message.from_user.id]["correctAnswer"]:
             if message.text == "Решить похожее задание":
                 mycursor.execute(
-                    f"SELECT `id`, `text`, `img`, `answer`, `answerNum`, `file`, `img2` FROM `tasks` WHERE `type` = {usersLocalDb[message.from_user.id]["getTaskAnswer"]["type"]} ORDER BY rand() LIMIT 1")
+                    f"SELECT `id`, `text`, `img`, `answer`, `answerNum`, `file`, `img2` FROM `tasks` WHERE `type` = {usersLocalDb[message.from_user.id]['getTaskAnswer']['type']} ORDER BY rand() LIMIT 1")
                 myresult = mycursor.fetchall()
                 id = myresult[0][0]
                 text = myresult[0][1]
@@ -665,9 +664,9 @@ async def MessageHandler(message: types.Message):
             elif message.text == "Показать ответ":
                 if not usersLocalDb[message.from_user.id]["getTaskAnswer"]["imgSecondUrl"] == None:
                     await message.answer_photo(usersLocalDb[message.from_user.id]["getTaskAnswer"]["imgSecondUrl"],
-                                               f"Ответ: {usersLocalDb[message.from_user.id]["getTaskAnswer"]["answerNum"]} \n \n Объяснение: \n {usersLocalDb[message.from_user.id]["getTaskAnswer"]["answer"]}")
+                                               f"Ответ: {usersLocalDb[message.from_user.id]['getTaskAnswer']['answerNum']} \n \n Объяснение: \n {usersLocalDb[message.from_user.id]['getTaskAnswer']['answer']}")
                 else:
-                    await message.answer(f"Ответ: {usersLocalDb[message.from_user.id]["getTaskAnswer"]["answerNum"]} \n \n Объяснение: \n {usersLocalDb[message.from_user.id]["getTaskAnswer"]["answer"]}")
+                    await message.answer(f"Ответ: {usersLocalDb[message.from_user.id]['getTaskAnswer']['answerNum']} \n \n Объяснение: \n {usersLocalDb[message.from_user.id]['getTaskAnswer']['answer']}")
                 # Кнопки меню пользователя
                 tasksListMenuButton = types.KeyboardButton(text="Начать решать!")
                 userStatisticsMenuButton = types.KeyboardButton(text="Моя статистика")
