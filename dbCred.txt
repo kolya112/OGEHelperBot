@@ -1,4 +1,0 @@
-host: 127.0.0.1
-user: OGEHelperBot
-password: CUj7_96GqKHs8BA9
-database: ogehelperbot
