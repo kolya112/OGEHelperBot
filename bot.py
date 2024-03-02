@@ -12,14 +12,13 @@ try:
 except FileExistsError:
     exit(404)
 
-mydb = mysql.connector.connect(
-        host=_dbCred.split("host: ")[1].split("\n")[0],
-        user=_dbCred.split("user: ")[1].split("\n")[0],
-        password=_dbCred.split("password: ")[1].split("\n")[0],
-        database=_dbCred.split("database: ")[1].split("\n")[0],
-        auth_plugin='mysql_native_password'
-    )
-mycursor = mydb.cursor()
+mySQLConfig = {
+    "host":_dbCred.split("host: ")[1].split("\n")[0],
+    "user":_dbCred.split("user: ")[1].split("\n")[0],
+    "password":_dbCred.split("password: ")[1].split("\n")[0],
+    "database":_dbCred.split("database: ")[1].split("\n")[0],
+    "auth_plugin":"mysql_native_password"
+}
 
 dp = Dispatcher()
 
@@ -40,8 +39,12 @@ async def InitNewUser(telegramUser : types.User, clean = False):
         usersLocalDb[telegramUser.id]["correctAnswer"] = False
         usersLocalDb[telegramUser.id]["inCorrectAnswer"] = False
 
+    mydb = mysql.connector.connect(**mySQLConfig)
+    mycursor = mydb.cursor()
     mycursor.execute(f"SELECT COUNT(`id`) FROM `users` WHERE `tgid` = {telegramUser.id};")
     myresult = mycursor.fetchall()
+    mydb.close()
+    mycursor.close()
 
     if myresult[0][0] == 0:
         sql = "INSERT INTO `users` (`tgid`, `username`, `totalTasks`, `completeTasks`) VALUES (%s, %s, 0, 0);"
@@ -73,8 +76,6 @@ async def start(message: types.Message):
 @dp.message(Command("shutdown"), StateFilter(default_state))
 async def ShutDownCommandHandler(message: types.Message):
     if (message.from_user.id == 703433131):
-        mycursor.close()
-        mydb.close()
         exit(0)
 
 @dp.message()
@@ -85,8 +86,12 @@ async def MessageHandler(message: types.Message):
     if usersLocalDb[message.from_user.id]["getTaskNumber"]:
         match message.text:
             case "№ 1":
+                mydb = mysql.connector.connect(**mySQLConfig)
+                mycursor = mydb.cursor()
                 mycursor.execute(f"SELECT `id`, `type`, `text`, `img`, `answer`, `answerNum`, `file`, `img2` FROM `tasks` WHERE `type` = {message.text.split('№ ')[1]} ORDER BY rand() LIMIT 1")
                 myresult = mycursor.fetchall()
+                mydb.close()
+                mycursor.close()
                 id = myresult[0][0]
                 taskType = myresult[0][1]
                 text = myresult[0][2]
@@ -118,9 +123,13 @@ async def MessageHandler(message: types.Message):
                 usersLocalDb[message.from_user.id]["getTaskAnswer"]["answerNum"] = answerNum
                 usersLocalDb[message.from_user.id]["getTaskAnswer"]["imgSecondUrl"] = imgSecondUrl
             case "№ 2":
+                mydb = mysql.connector.connect(**mySQLConfig)
+                mycursor = mydb.cursor()
                 mycursor.execute(
                     f"SELECT `id`, `type`, `text`, `img`, `answer`, `answerNum`, `file`, `img2` FROM `tasks` WHERE `type` = {message.text.split('№ ')[1]} ORDER BY rand() LIMIT 1")
                 myresult = mycursor.fetchall()
+                mydb.close()
+                mycursor.close()
                 id = myresult[0][0]
                 taskType = myresult[0][1]
                 text = myresult[0][2]
@@ -154,9 +163,13 @@ async def MessageHandler(message: types.Message):
                 usersLocalDb[message.from_user.id]["getTaskAnswer"]["answerNum"] = answerNum
                 usersLocalDb[message.from_user.id]["getTaskAnswer"]["imgSecondUrl"] = imgSecondUrl
             case "№ 3":
+                mydb = mysql.connector.connect(**mySQLConfig)
+                mycursor = mydb.cursor()
                 mycursor.execute(
                     f"SELECT `id`, `type`, `text`, `img`, `answer`, `answerNum`, `file`, `img2` FROM `tasks` WHERE `type` = {message.text.split('№ ')[1]} ORDER BY rand() LIMIT 1")
                 myresult = mycursor.fetchall()
+                mydb.close()
+                mycursor.close()
                 id = myresult[0][0]
                 taskType = myresult[0][1]
                 text = myresult[0][2]
@@ -190,9 +203,13 @@ async def MessageHandler(message: types.Message):
                 usersLocalDb[message.from_user.id]["getTaskAnswer"]["answerNum"] = answerNum
                 usersLocalDb[message.from_user.id]["getTaskAnswer"]["imgSecondUrl"] = imgSecondUrl
             case "№ 4":
+                mydb = mysql.connector.connect(**mySQLConfig)
+                mycursor = mydb.cursor()
                 mycursor.execute(
                     f"SELECT `id`, `type`, `text`, `img`, `answer`, `answerNum`, `file`, `img2` FROM `tasks` WHERE `type` = {message.text.split('№ ')[1]} ORDER BY rand() LIMIT 1")
                 myresult = mycursor.fetchall()
+                mydb.close()
+                mycursor.close()
                 id = myresult[0][0]
                 taskType = myresult[0][1]
                 text = myresult[0][2]
@@ -226,9 +243,13 @@ async def MessageHandler(message: types.Message):
                 usersLocalDb[message.from_user.id]["getTaskAnswer"]["answerNum"] = answerNum
                 usersLocalDb[message.from_user.id]["getTaskAnswer"]["imgSecondUrl"] = imgSecondUrl
             case "№ 5":
+                mydb = mysql.connector.connect(**mySQLConfig)
+                mycursor = mydb.cursor()
                 mycursor.execute(
                     f"SELECT `id`, `type`, `text`, `img`, `answer`, `answerNum`, `file`, `img2` FROM `tasks` WHERE `type` = {message.text.split('№ ')[1]} ORDER BY rand() LIMIT 1")
                 myresult = mycursor.fetchall()
+                mydb.close()
+                mycursor.close()
                 id = myresult[0][0]
                 taskType = myresult[0][1]
                 text = myresult[0][2]
@@ -262,9 +283,13 @@ async def MessageHandler(message: types.Message):
                 usersLocalDb[message.from_user.id]["getTaskAnswer"]["answerNum"] = answerNum
                 usersLocalDb[message.from_user.id]["getTaskAnswer"]["imgSecondUrl"] = imgSecondUrl
             case "№ 6":
+                mydb = mysql.connector.connect(**mySQLConfig)
+                mycursor = mydb.cursor()
                 mycursor.execute(
                     f"SELECT `id`, `type`, `text`, `img`, `answer`, `answerNum`, `file`, `img2` FROM `tasks` WHERE `type` = {message.text.split('№ ')[1]} ORDER BY rand() LIMIT 1")
                 myresult = mycursor.fetchall()
+                mydb.close()
+                mycursor.close()
                 id = myresult[0][0]
                 taskType = myresult[0][1]
                 text = myresult[0][2]
@@ -298,9 +323,13 @@ async def MessageHandler(message: types.Message):
                 usersLocalDb[message.from_user.id]["getTaskAnswer"]["answerNum"] = answerNum
                 usersLocalDb[message.from_user.id]["getTaskAnswer"]["imgSecondUrl"] = imgSecondUrl
             case "№ 7":
+                mydb = mysql.connector.connect(**mySQLConfig)
+                mycursor = mydb.cursor()
                 mycursor.execute(
                     f"SELECT `id`, `type`, `text`, `img`, `answer`, `answerNum`, `file`, `img2` FROM `tasks` WHERE `type` = {message.text.split('№ ')[1]} ORDER BY rand() LIMIT 1")
                 myresult = mycursor.fetchall()
+                mydb.close()
+                mycursor.close()
                 id = myresult[0][0]
                 taskType = myresult[0][1]
                 text = myresult[0][2]
@@ -334,9 +363,13 @@ async def MessageHandler(message: types.Message):
                 usersLocalDb[message.from_user.id]["getTaskAnswer"]["answerNum"] = answerNum
                 usersLocalDb[message.from_user.id]["getTaskAnswer"]["imgSecondUrl"] = imgSecondUrl
             case "№ 8":
+                mydb = mysql.connector.connect(**mySQLConfig)
+                mycursor = mydb.cursor()
                 mycursor.execute(
                     f"SELECT `id`, `type`, `text`, `img`, `answer`, `answerNum`, `file`, `img2` FROM `tasks` WHERE `type` = {message.text.split('№ ')[1]} ORDER BY rand() LIMIT 1")
                 myresult = mycursor.fetchall()
+                mydb.close()
+                mycursor.close()
                 id = myresult[0][0]
                 taskType = myresult[0][1]
                 text = myresult[0][2]
@@ -370,9 +403,13 @@ async def MessageHandler(message: types.Message):
                 usersLocalDb[message.from_user.id]["getTaskAnswer"]["answerNum"] = answerNum
                 usersLocalDb[message.from_user.id]["getTaskAnswer"]["imgSecondUrl"] = imgSecondUrl
             case "№ 9":
+                mydb = mysql.connector.connect(**mySQLConfig)
+                mycursor = mydb.cursor()
                 mycursor.execute(
                     f"SELECT `id`, `type`, `text`, `img`, `answer`, `answerNum`, `file`, `img2` FROM `tasks` WHERE `type` = {message.text.split('№ ')[1]} ORDER BY rand() LIMIT 1")
                 myresult = mycursor.fetchall()
+                mydb.close()
+                mycursor.close()
                 id = myresult[0][0]
                 taskType = myresult[0][1]
                 text = myresult[0][2]
@@ -406,9 +443,13 @@ async def MessageHandler(message: types.Message):
                 usersLocalDb[message.from_user.id]["getTaskAnswer"]["answerNum"] = answerNum
                 usersLocalDb[message.from_user.id]["getTaskAnswer"]["imgSecondUrl"] = imgSecondUrl
             case "№ 10":
+                mydb = mysql.connector.connect(**mySQLConfig)
+                mycursor = mydb.cursor()
                 mycursor.execute(
                     f"SELECT `id`, `type`, `text`, `img`, `answer`, `answerNum`, `file`, `img2` FROM `tasks` WHERE `type` = {message.text.split('№ ')[1]} ORDER BY rand() LIMIT 1")
                 myresult = mycursor.fetchall()
+                mydb.close()
+                mycursor.close()
                 id = myresult[0][0]
                 taskType = myresult[0][1]
                 text = myresult[0][2]
@@ -442,9 +483,13 @@ async def MessageHandler(message: types.Message):
                 usersLocalDb[message.from_user.id]["getTaskAnswer"]["answerNum"] = answerNum
                 usersLocalDb[message.from_user.id]["getTaskAnswer"]["imgSecondUrl"] = imgSecondUrl
             case "№ 11":
+                mydb = mysql.connector.connect(**mySQLConfig)
+                mycursor = mydb.cursor()
                 mycursor.execute(
                     f"SELECT `id`, `type`, `text`, `img`, `answer`, `answerNum`, `file`, `img2` FROM `tasks` WHERE `type` = {message.text.split('№ ')[1]} ORDER BY rand() LIMIT 1")
                 myresult = mycursor.fetchall()
+                mydb.close()
+                mycursor.close()
                 id = myresult[0][0]
                 taskType = myresult[0][1]
                 text = myresult[0][2]
@@ -478,9 +523,13 @@ async def MessageHandler(message: types.Message):
                 usersLocalDb[message.from_user.id]["getTaskAnswer"]["answerNum"] = answerNum
                 usersLocalDb[message.from_user.id]["getTaskAnswer"]["imgSecondUrl"] = imgSecondUrl
             case "№ 12":
+                mydb = mysql.connector.connect(**mySQLConfig)
+                mycursor = mydb.cursor()
                 mycursor.execute(
                     f"SELECT `id`, `type`, `text`, `img`, `answer`, `answerNum`, `file`, `img2` FROM `tasks` WHERE `type` = {message.text.split('№ ')[1]} ORDER BY rand() LIMIT 1")
                 myresult = mycursor.fetchall()
+                mydb.close()
+                mycursor.close()
                 id = myresult[0][0]
                 taskType = myresult[0][1]
                 text = myresult[0][2]
@@ -556,8 +605,12 @@ async def MessageHandler(message: types.Message):
                     reply_markup=tasksMarkup)
 
             case "Моя статистика":
+                mydb = mysql.connector.connect(**mySQLConfig)
+                mycursor = mydb.cursor()
                 mycursor.execute(f"SELECT `totalTasks`, `completeTasks` FROM `users` WHERE `tgid` = {message.from_user.id};")
                 myresult = mycursor.fetchall()
+                mydb.close()
+                mycursor.close()
                 await message.answer(f"Ваша статистика в боте: \n \n Всего решено заданий: {myresult[0][0]} \n Верно решённых заданий: {myresult[0][1]}")
             case "О боте":
                 await message.answer("Наш бот является сборником заданий первой части для подготовки к ОГЭ по информатике. Бот не только выдаёт задания, но и автоматически проверяет ответ от пользователя, а также может показать правильный ответ и решение задания, если ответ пользователя оказался неверным \n Авторы: Николай Юрченко и Даниил Бойков")
@@ -585,14 +638,22 @@ async def MessageHandler(message: types.Message):
             resize_keyboard=True,
             input_field_placeholder="Выбери нужный пункт:")
 
+        mydb = mysql.connector.connect(**mySQLConfig)
+        mycursor = mydb.cursor()
         sql = f"UPDATE `users` SET `totalTasks` = `totalTasks` + 1 WHERE `tgid` = {message.from_user.id};"
         mycursor.execute(sql)
         mydb.commit()
+        mydb.close()
+        mycursor.close()
 
         if message.text == answerNum:
+            mydb = mysql.connector.connect(**mySQLConfig)
+            mycursor = mydb.cursor()
             sql = f"UPDATE `users` SET `completeTasks` = `completeTasks` + 1 WHERE `tgid` = {message.from_user.id};"
             mycursor.execute(sql)
             mydb.commit()
+            mydb.close()
+            mycursor.close()
             await message.answer("Ты верно решил задание, поздравляю!",
                                  reply_markup=correctAnswer)
             usersLocalDb[message.from_user.id]["correctAnswer"] = True
@@ -622,9 +683,13 @@ async def MessageHandler(message: types.Message):
             usersLocalDb[message.from_user.id]["inCorrectAnswer"] = False
         if usersLocalDb[message.from_user.id]["correctAnswer"]:
             if message.text == "Решить похожее задание":
+                mydb = mysql.connector.connect(**mySQLConfig)
+                mycursor = mydb.cursor()
                 mycursor.execute(
                     f"SELECT `id`, `text`, `img`, `answer`, `answerNum`, `file`, `img2` FROM `tasks` WHERE `type` = {usersLocalDb[message.from_user.id]['getTaskAnswer']['type']} ORDER BY rand() LIMIT 1")
                 myresult = mycursor.fetchall()
+                mydb.close()
+                mycursor.close()
                 id = myresult[0][0]
                 text = myresult[0][1]
                 imgUrl = myresult[0][2]
@@ -698,6 +763,3 @@ async def MessageHandler(message: types.Message):
 
 if __name__ == "__main__":
     asyncio.run(main())
-
-mycursor.close()
-mydb.close()
